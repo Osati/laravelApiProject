@@ -24,3 +24,9 @@ Route::get('/users/{id?}',[UserApiController::class,'showUser']);
 Route::post('/add-user',[UserApiController::class,'addUser']);
 
 Route::post('/add-multi-user',[UserApiController::class,'addMultiUser']);
+
+// api use for update user
+Route::put('/update-user-details/{id}',[UserApiController::class,'UpdateUserDetails']);
+// api use for update user
+Route::delete('/delete-user/{id}',[UserApiController::class,'deleteUser']);
+

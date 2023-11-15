@@ -50,6 +50,7 @@ class UserApiController extends Controller
 
         }
     }
+
 //   multi user add for post
     public function addMultiUser(Request $request){
         if ($request->isMethod('post')){
@@ -83,5 +84,44 @@ class UserApiController extends Controller
             }
             return response()->json(['msg'=>$msg],201);
         }
+    }
+
+
+//    update user details
+
+    public function UpdateUserDetails(Request $request,$id){
+        if ($request->isMethod('put')){
+            $data = $request->all();
+//            return $data;
+            $rules =[
+                'name'=>'required',
+                'password'=>'required',
+            ];
+            $customMessage =[
+                'name.required'=>'Name is Required',
+                'password.required'=>'Password is Required',
+
+            ];
+
+            $validator = Validator::make($data,$rules,$customMessage);
+            if ($validator->fails()){
+                return response()->json($validator->errors(),422);
+            }
+
+
+            $user = User::findOrfail($id);
+            $user->name = $data['name'];
+            $user->password = bcrypt($data['password']);
+            $user->save();
+            $msg = 'User details Update successfully';
+            return response()->json(['msg'=>$msg],202);
+
+        }
+    }
+
+    public function deleteUser($id = null){
+        User::findOrfail($id)->delete();
+        $msg = 'User delete successfully';
+        return response()->json(['msg'=>$msg],200);
     }
 }
